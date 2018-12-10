@@ -15,7 +15,7 @@ RUN set -x \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \
     && composer install \
     && addgroup ${GNAME} -g ${GID} \
-    && adduser -H -D -G ${GNAME} -u ${UID} ${UNAME} \
+    && adduser -D -G ${GNAME} -u ${UID} ${UNAME} \
     && chown -R ${UNAME}:${GNAME} /var/www/html
 
 USER ${UNAME}
