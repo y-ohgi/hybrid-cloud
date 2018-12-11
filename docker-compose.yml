@@ -19,15 +19,17 @@ services:
       dockerfile: Dockerfile
     volumes:
       - .:/var/www/html:cached
+    depends_on:
+      - datadog
     environment:
-      BG_COLOR: 'black'
+      - BG_COLOR=black
 
   datadog:
-    image: datadog/docker-dd-agent
+    image: datadog/agent:latest
     environment:
-     - API_KEY=${DD_API_KEY}
-     - TAGS=env:local
+     - DD_API_KEY=${DD_API_KEY}
+     - DD_APM_ENABLED=true
     volumes:
-     - /var/run/docker.sock:/var/run/docker.sock
+     - /var/run/docker.sock:/var/run/docker.sock:ro
      - /proc/mounts:/host/proc/mounts:ro
      - /sys/fs/cgroup:/host/sys/fs/cgroup:ro
