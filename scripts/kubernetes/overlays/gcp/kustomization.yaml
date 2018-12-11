@@ -1,0 +1,9 @@
+bases:
+  - ../../base
+
+namespace: default
+
+patches:
+  - deployment_web.yaml
+  # - ingress.yaml
+  # - certificate.yaml

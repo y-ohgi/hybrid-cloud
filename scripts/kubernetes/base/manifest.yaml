@@ -1,0 +1,69 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+  labels:
+    app: web
+
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: web
+  template:
+    metadata:
+      labels:
+        app: web
+
+    spec:
+      containers:
+        - name: nginx
+          image: yohgi/hybrid-cloud_nginx
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+
+        - name: web
+          image: yohgi/hybrid-cloud_web
+          imagePullPolicy: Always
+          env:
+            - name: BG_COLOR
+              value: '#eeeeee'
+
+        # - name: dd-agent
+        #   image: datadog/agent
+        #   imagePullPolicy: Always
+        #   env:
+        #     - name: DD_API_KEY
+        #       valueFrom:
+        #         secretKeyRef:
+        #           name: dd-agent
+        #           key: api-key
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: web
+
+spec:
+  type: NodePort
+  selector:
+    app: web
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 80
+
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: web
+  labels:
+    app: web
+
+spec:
+  backend:
+    serviceName: web
+    servicePort: 80
