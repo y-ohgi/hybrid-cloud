@@ -13,4 +13,4 @@ spec:
         - name: web
           env:
             - name: BG_COLOR
-              value: '#3473b4'
+              value: '#67b2d5'
